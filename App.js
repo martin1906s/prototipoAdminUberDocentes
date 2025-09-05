@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Platform } from 'react-native';
+import RootNavigator from './src/navigation/RootNavigator';
+import { StoreProvider } from './src/store/store';
+import { ThemeProvider } from './src/context/ThemeContext';
+
+// Solo habilitar screens en plataformas nativas
+if (Platform.OS !== 'web') {
+  try {
+    const { enableScreens } = require('react-native-screens');
+    enableScreens();
+  } catch (error) {
+    console.warn('Error enabling screens:', error);
+  }
+}
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <StoreProvider>
+        <RootNavigator />
+      </StoreProvider>
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
