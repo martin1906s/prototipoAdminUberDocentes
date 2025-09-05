@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    marginTop: -SPACING['9xl'],
+    marginTop: -SPACING['1xl'],
   },
   statsSection: {
     paddingHorizontal: CONTAINER_SPACING.screen,
