@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login, loginWithGoogle } = useAuth();
+  const { login, loginWithGoogle, clearAuth } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -186,6 +186,15 @@ const LoginScreen = ({ navigation }) => {
                   </View>
                 </View>
               </View>
+
+              {/* Botón de limpiar sesión para desarrollo */}
+              <TouchableOpacity 
+                style={styles.clearButton}
+                onPress={clearAuth}
+              >
+                <Ionicons name="refresh-outline" size={16} color={COLORS.gray[600]} />
+                <Text style={styles.clearButtonText}>Limpiar Sesión (Desarrollo)</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -386,6 +395,24 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.xs,
     color: COLORS.gray[600],
     flex: 1,
+  },
+  clearButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: SPACING['2xl'],
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.lg,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: BORDER_RADIUS.lg,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  clearButtonText: {
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.gray[600],
+    marginLeft: SPACING.sm,
+    fontWeight: FONT_WEIGHTS.medium,
   },
 });
 

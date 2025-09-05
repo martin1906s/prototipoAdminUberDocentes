@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Alert,
   RefreshControl,
   Platform
 } from 'react-native';
@@ -14,11 +13,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useStore } from '../store/store';
 import { COLORS, FONT_SIZES, FONT_WEIGHTS, SPACING, CONTAINER_SPACING, BORDER_RADIUS, SHADOWS } from '../utils/constants';
+import CustomModal from '../components/CustomModal';
+import { useModal } from '../hooks/useModal';
 
 export default function AdminDashboardScreen({ navigation }) {
   const { user, logout } = useAuth();
   const { state } = useStore();
   const [refreshing, setRefreshing] = useState(false);
+  const { modalVisible, modalConfig, showConfirm, hideModal } = useModal();
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalTeachers: 0,
@@ -94,13 +96,10 @@ export default function AdminDashboardScreen({ navigation }) {
   };
 
   const handleLogout = () => {
-    Alert.alert(
+    showConfirm(
       'Cerrar Sesión',
       '¿Estás seguro de que quieres cerrar sesión?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Cerrar Sesión', onPress: logout }
-      ]
+      logout
     );
   };
 
@@ -233,7 +232,7 @@ export default function AdminDashboardScreen({ navigation }) {
           <View style={styles.quickActions}>
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => Alert.alert('Próximamente', 'Gestión de docentes')}
+              onPress={() => showConfirm('Próximamente', 'Gestión de docentes', () => {})}
             >
               <LinearGradient
                 colors={COLORS.gradientPrimary}
@@ -248,7 +247,7 @@ export default function AdminDashboardScreen({ navigation }) {
 
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => Alert.alert('Próximamente', 'Gestión de propuestas')}
+              onPress={() => showConfirm('Próximamente', 'Gestión de propuestas', () => {})}
             >
               <LinearGradient
                 colors={COLORS.gradientAccent}
@@ -263,7 +262,7 @@ export default function AdminDashboardScreen({ navigation }) {
 
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => Alert.alert('Próximamente', 'Reportes y estadísticas')}
+              onPress={() => showConfirm('Próximamente', 'Reportes y estadísticas', () => {})}
             >
               <LinearGradient
                 colors={[COLORS.accent, COLORS.accentDark]}
@@ -278,7 +277,7 @@ export default function AdminDashboardScreen({ navigation }) {
 
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => Alert.alert('Próximamente', 'Configuración del sistema')}
+              onPress={() => showConfirm('Próximamente', 'Configuración del sistema', () => {})}
             >
               <LinearGradient
                 colors={[COLORS.gray[600], COLORS.gray[700]]}
@@ -297,7 +296,7 @@ export default function AdminDashboardScreen({ navigation }) {
         <View style={styles.recentContainer}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Propuestas Recientes</Text>
-            <TouchableOpacity onPress={() => Alert.alert('Próximamente', 'Vista detallada de propuestas')}>
+            <TouchableOpacity onPress={() => showConfirm('Próximamente', 'Vista detallada de propuestas', () => {})}>
               <Text style={styles.seeAllText}>Ver todas</Text>
             </TouchableOpacity>
           </View>
@@ -338,6 +337,16 @@ export default function AdminDashboardScreen({ navigation }) {
           ))}
         </View>
       </ScrollView>
+
+      {/* Modal personalizado */}
+      <CustomModal
+        visible={modalVisible}
+        onClose={hideModal}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        type={modalConfig.type}
+        buttons={modalConfig.buttons}
+      />
     </View>
   );
 }

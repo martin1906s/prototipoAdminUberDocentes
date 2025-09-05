@@ -1,14 +1,17 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useStore } from '../store/store';
 import { COLORS, FONT_SIZES, FONT_WEIGHTS, SPACING, CONTAINER_SPACING, BORDER_RADIUS, SHADOWS } from '../utils/constants';
+import CustomModal from '../components/CustomModal';
+import { useModal } from '../hooks/useModal';
 
 export default function ReportsScreen({ navigation }) {
   const { state } = useStore();
   const [selectedPeriod, setSelectedPeriod] = useState('mes');
   const [selectedReport, setSelectedReport] = useState('general');
+  const { modalVisible, modalConfig, showConfirm, showSuccess, hideModal } = useModal();
 
   // Datos simulados para reportes
   const reportsData = useMemo(() => {
@@ -117,26 +120,16 @@ export default function ReportsScreen({ navigation }) {
     const reportTitle = getChartTitle();
     const message = `¿Desea exportar el reporte "${reportTitle}" en formato ${format.toUpperCase()}?`;
     
-    Alert.alert(
+    showConfirm(
       'Exportar Reporte',
       message,
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Exportar',
-          onPress: () => {
-            // Simular exportación
-            Alert.alert(
-              'Exportación Exitosa',
-              `El reporte "${reportTitle}" ha sido exportado en formato ${format.toUpperCase()}`,
-              [{ text: 'OK' }]
-            );
-          },
-        },
-      ]
+      () => {
+        // Simular exportación
+        showSuccess(
+          'Exportación Exitosa',
+          `El reporte "${reportTitle}" ha sido exportado en formato ${format.toUpperCase()}`
+        );
+      }
     );
   };
 
@@ -315,6 +308,16 @@ export default function ReportsScreen({ navigation }) {
           </View>
         </View>
       </ScrollView>
+
+      {/* Modal personalizado */}
+      <CustomModal
+        visible={modalVisible}
+        onClose={hideModal}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        type={modalConfig.type}
+        buttons={modalConfig.buttons}
+      />
     </View>
   );
 }

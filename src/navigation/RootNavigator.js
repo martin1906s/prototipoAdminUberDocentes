@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -73,7 +74,12 @@ function AppNavigator() {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
-    return null; // Aquí podrías mostrar un spinner de carga
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+        <Text style={styles.loadingText}>Cargando...</Text>
+      </View>
+    );
   }
 
   return (
@@ -88,5 +94,20 @@ function AppNavigator() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.gray[50],
+  },
+  loadingText: {
+    marginTop: SPACING.lg,
+    fontSize: FONT_SIZES.base,
+    color: COLORS.gray[600],
+    fontWeight: FONT_WEIGHTS.medium,
+  },
+});
 
 export default AppNavigator;

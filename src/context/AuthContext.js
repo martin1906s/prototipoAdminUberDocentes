@@ -21,6 +21,10 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthState = async () => {
     try {
+      // Para desarrollo: limpiar autenticación al iniciar
+      // Comentar la siguiente línea en producción
+      await AsyncStorage.removeItem('user');
+      
       const userData = await AsyncStorage.getItem('user');
       if (userData) {
         setUser(JSON.parse(userData));
@@ -114,11 +118,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const clearAuth = async () => {
+    try {
+      setIsLoading(true);
+      await AsyncStorage.removeItem('user');
+      setUser(null);
+    } catch (error) {
+      console.error('Error al limpiar autenticación:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const value = {
     user,
     login,
     loginWithGoogle,
     logout,
+    clearAuth,
     isLoading
   };
 
