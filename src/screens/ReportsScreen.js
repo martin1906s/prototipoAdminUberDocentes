@@ -173,6 +173,9 @@ export default function ReportsScreen({ navigation }) {
             <Text style={styles.subtitle}>Estadísticas de la plataforma</Text>
           </View>
         </View>
+        <View style={styles.resumenContainer}>
+          <Text style={styles.resumenText}>📈 Resumen General</Text>
+        </View>
       </LinearGradient>
 
       <ScrollView 
@@ -182,7 +185,6 @@ export default function ReportsScreen({ navigation }) {
 
         {/* Estadísticas generales */}
         <View style={styles.statsSection}>
-          <Text style={styles.sectionTitle}>📈 Resumen General</Text>
           <View style={styles.statsGrid}>
             {generalStats.map((stat, index) => (
               <View key={index} style={[styles.statCard, { backgroundColor: stat.backgroundColor }]}>
@@ -345,13 +347,29 @@ const styles = StyleSheet.create({
     marginTop: SPACING.xs,
     opacity: 0.9,
   },
+  resumenContainer: {
+    paddingHorizontal: CONTAINER_SPACING.screen,
+    paddingBottom: SPACING.lg,
+  },
+  resumenText: {
+    fontSize: FONT_SIZES.xl,
+    fontWeight: FONT_WEIGHTS.bold,
+    color: COLORS.white,
+    textAlign: 'center',
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderRadius: BORDER_RADIUS.lg,
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
   scrollContainer: {
     flex: 1,
-    marginTop: -SPACING['1xl'],
   },
   statsSection: {
     paddingHorizontal: CONTAINER_SPACING.screen,
-    paddingTop: SPACING['4xl'],
+    paddingTop: SPACING.lg,
     paddingBottom: SPACING['3xl'],
   },
   sectionTitle: {

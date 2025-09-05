@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    marginTop: -SPACING.lg,
+    marginTop: -SPACING['1xl'],
   },
   statsContainer: {
     flexDirection: 'row',
