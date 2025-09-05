@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  RefreshControl
+  RefreshControl,
+  Platform
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -157,6 +158,7 @@ export default function AdminDashboardScreen({ navigation }) {
 
       <ScrollView 
         style={styles.scrollContainer}
+        contentContainerStyle={styles.scrollContent}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -344,6 +346,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.gray[50],
+    ...(Platform.OS === 'web' && {
+      height: '100vh',
+      overflow: 'hidden',
+    }),
   },
   headerGradient: {
     paddingTop: SPACING['5xl'],
@@ -384,6 +390,10 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
     marginTop: -SPACING['1xl'],
+    ...(Platform.OS === 'web' && {
+      overflowY: 'auto',
+      overflowX: 'hidden',
+    }),
   },
   statsContainer: {
     flexDirection: 'row',
@@ -516,5 +526,34 @@ const styles = StyleSheet.create({
   proposalDetailText: {
     fontSize: FONT_SIZES.sm,
     color: COLORS.gray[600],
+  },
+  // Estilos específicos para web
+  scrollContent: {
+    ...(Platform.OS === 'web' && {
+      minHeight: '100%',
+      paddingBottom: SPACING['6xl'],
+    }),
+  },
+  // Mejorar botones para web
+  quickActionButton: {
+    width: '48%',
+    marginBottom: SPACING['2xl'],
+    borderRadius: BORDER_RADIUS.xl,
+    overflow: 'hidden',
+    ...SHADOWS.md,
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      userSelect: 'none',
+      transition: 'all 0.2s ease',
+    }),
+  },
+  logoutButton: {
+    borderRadius: BORDER_RADIUS.lg,
+    overflow: 'hidden',
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      userSelect: 'none',
+      transition: 'all 0.2s ease',
+    }),
   },
 });

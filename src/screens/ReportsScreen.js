@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useStore } from '../store/store';
@@ -181,6 +181,7 @@ export default function ReportsScreen({ navigation }) {
       <ScrollView 
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
       >
 
         {/* Estadísticas generales */}
@@ -322,6 +323,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.gray[50],
+    ...(Platform.OS === 'web' && {
+      height: '100vh',
+      overflow: 'hidden',
+    }),
   },
   headerGradient: {
     paddingTop: SPACING['5xl'],
@@ -366,6 +371,10 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
+    ...(Platform.OS === 'web' && {
+      overflowY: 'auto',
+      overflowX: 'hidden',
+    }),
   },
   statsSection: {
     paddingHorizontal: CONTAINER_SPACING.screen,
@@ -439,16 +448,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: SPACING.sm,
   },
-  reportButton: {
-    flex: 1,
-    minWidth: '45%',
-    paddingVertical: SPACING.md,
-    backgroundColor: COLORS.gray[50],
-    borderRadius: BORDER_RADIUS.lg,
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    alignItems: 'center',
-  },
   reportButtonActive: {
     backgroundColor: COLORS.primary,
   },
@@ -483,16 +482,6 @@ const styles = StyleSheet.create({
   exportButtons: {
     flexDirection: 'row',
     gap: SPACING.md,
-  },
-  exportButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: SPACING.md,
-    paddingHorizontal: SPACING.lg,
-    borderRadius: BORDER_RADIUS.lg,
-    ...SHADOWS.sm,
   },
   excelButton: {
     backgroundColor: COLORS.success,
@@ -564,5 +553,43 @@ const styles = StyleSheet.create({
     fontWeight: FONT_WEIGHTS.semibold,
     width: 35,
     textAlign: 'right',
+  },
+  // Estilos específicos para web
+  scrollContent: {
+    ...(Platform.OS === 'web' && {
+      minHeight: '100%',
+      paddingBottom: SPACING['6xl'],
+    }),
+  },
+  // Mejorar botones para web
+  reportButton: {
+    flex: 1,
+    minWidth: '45%',
+    paddingVertical: SPACING.md,
+    backgroundColor: COLORS.gray[50],
+    borderRadius: BORDER_RADIUS.lg,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    alignItems: 'center',
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      userSelect: 'none',
+      transition: 'all 0.2s ease',
+    }),
+  },
+  exportButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+    borderRadius: BORDER_RADIUS.lg,
+    ...SHADOWS.sm,
+    ...(Platform.OS === 'web' && {
+      cursor: 'pointer',
+      userSelect: 'none',
+      transition: 'all 0.2s ease',
+    }),
   },
 });
