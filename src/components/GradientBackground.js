@@ -1,7 +1,7 @@
 import React from 'react';
 import WebCompatibleLinearGradient from './WebCompatibleLinearGradient';
 import { View, StyleSheet } from 'react-native';
-import { getColors, spacing, gradients } from '../theme/theme';
+import { COLORS, SPACING } from '../utils/constants';
 import { useTheme } from '../context/ThemeContext';
 
 export default function GradientBackground({ children, variant = 'light', theme = 'default' }) {
@@ -11,7 +11,7 @@ export default function GradientBackground({ children, variant = 'light', theme 
   // Si es 'white', usar fondo según el tema
   if (variant === 'white') {
     return (
-      <View style={[styles.container, { backgroundColor: colors.white }]}>
+      <View style={[styles.container, { backgroundColor: COLORS.white }]}>
         <View style={styles.content}>
           {children}
         </View>
@@ -20,12 +20,12 @@ export default function GradientBackground({ children, variant = 'light', theme 
   }
   
   // Si hay un tema específico, usar sus colores
-  if (theme !== 'default' && colors.themes[theme]) {
-    const themeColors = colors.themes[theme];
+  if (theme !== 'default') {
+    const themeColors = COLORS;
     return (
-      <View style={[styles.container, { backgroundColor: themeColors.background }]}>
+              <View style={[styles.container, { backgroundColor: COLORS.gray[50] }]}>
         <WebCompatibleLinearGradient
-          colors={[themeColors.background, themeColors.card]}
+          colors={[COLORS.gray[50], COLORS.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.gradient}
@@ -64,6 +64,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: spacing.xl,
+    padding: SPACING.xl,
   },
 });

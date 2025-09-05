@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Animated, Dimensions, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { colors, spacing, typography, radii, elevation } from '../theme/theme';
+import { COLORS, SPACING, FONT_SIZES, FONT_WEIGHTS, BORDER_RADIUS, SHADOWS } from '../utils/constants';
 import { useStore } from '../store/store';
 
 const { width } = Dimensions.get('window');
@@ -47,17 +47,17 @@ export default function OptionsMenu({ navigation, theme = 'userSearch' }) {
   const getThemeColors = () => {
     switch (theme) {
       case 'userSearch':
-        return colors.themes.userSearch;
+        return COLORS.primary;
       case 'userProfile':
-        return colors.themes.userProfile;
+        return COLORS.secondary;
       case 'teacherSetup':
-        return colors.themes.teacherSetup;
+        return COLORS.accent;
       case 'teacherProposals':
-        return colors.themes.teacherProposals;
+        return COLORS.warning;
       case 'adminDashboard':
-        return colors.themes.adminDashboard;
+        return COLORS.info;
       default:
-        return colors.themes.userSearch;
+        return COLORS.primary;
     }
   };
 
@@ -110,8 +110,8 @@ export default function OptionsMenu({ navigation, theme = 'userSearch' }) {
                 onPress={handleExit}
               >
                 <View style={styles.menuItemContent}>
-                  <MaterialIcons name="exit-to-app" size={24} color={colors.danger} />
-                  <Text style={[styles.menuItemText, { color: colors.danger }]}>Cerrar sesión</Text>
+                  <MaterialIcons name="exit-to-app" size={24} color={COLORS.danger} />
+                  <Text style={[styles.menuItemText, { color: COLORS.danger }]}>Cerrar sesión</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
   menuContainer: {
     width: width * 0.8,
     maxWidth: 300,
-    backgroundColor: colors.white,
-    borderRadius: radii.lg,
+    backgroundColor: COLORS.white,
+    borderRadius: BORDER_RADIUS.lg,
     overflow: 'hidden',
     // Web-compatible shadow
     shadowColor: '#000',
@@ -155,23 +155,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: spacing.lg,
+    padding: SPACING.lg,
     borderBottomWidth: 1,
-    borderBottomColor: colors.neutral200,
+    borderBottomColor: COLORS.gray[200],
   },
   menuTitle: {
-    ...typography.subtitle,
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: FONT_SIZES.lg,
+    fontWeight: FONT_WEIGHTS.bold,
   },
   closeButton: {
-    padding: spacing.xs,
+    padding: SPACING.xs,
   },
   menuContent: {
-    padding: spacing.sm,
+    padding: SPACING.sm,
   },
   menuItem: {
-    padding: spacing.lg,
+    padding: SPACING.lg,
     borderBottomWidth: 1,
     minHeight: 56,
   },
@@ -179,11 +178,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.md,
+    gap: SPACING.md,
   },
   menuItemText: {
-    ...typography.body,
-    fontWeight: '600',
-    fontSize: 16,
+    fontSize: FONT_SIZES.base,
+    fontWeight: FONT_WEIGHTS.semibold,
   },
 });

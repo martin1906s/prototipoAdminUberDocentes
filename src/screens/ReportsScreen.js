@@ -1,11 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import GradientBackground from '../components/GradientBackground';
-import AppCard from '../components/AppCard';
-import OptionsMenu from '../components/OptionsMenu';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { useStore } from '../store/store';
-import { spacing, colors, typography, radii } from '../theme/theme';
+import { COLORS, FONT_SIZES, FONT_WEIGHTS, SPACING, CONTAINER_SPACING, BORDER_RADIUS, SHADOWS } from '../utils/constants';
 
 export default function ReportsScreen({ navigation }) {
   const { state } = useStore();
@@ -32,44 +30,44 @@ export default function ReportsScreen({ navigation }) {
         usuarios: months.map((month, index) => ({
           month,
           value: 80 + (index * 15) + (index % 3) * 20, // Crecimiento gradual
-          color: colors.primary
+          color: COLORS.primary
         })),
         docentes: months.map((month, index) => ({
           month,
           value: 8 + (index * 2) + (index % 2) * 3, // Crecimiento gradual
-          color: colors.success
+          color: COLORS.success
         })),
         propuestas: months.map((month, index) => ({
           month,
           value: 120 + (index * 25) + (index % 4) * 15, // Crecimiento gradual
-          color: colors.info
+          color: COLORS.info
         })),
         ingresos: months.map((month, index) => ({
           month,
           value: 2500 + (index * 400) + (index % 3) * 300, // Crecimiento gradual
-          color: colors.warning
+          color: COLORS.warning
         })),
       },
       semanal: {
         usuarios: days.map((day, index) => ({
           day,
           value: 15 + (index * 2) + (index % 2) * 5, // Patrón semanal
-          color: colors.primary
+          color: COLORS.primary
         })),
         docentes: days.map((day, index) => ({
           day,
           value: 3 + (index % 3) + (index % 2) * 2, // Patrón semanal
-          color: colors.success
+          color: COLORS.success
         })),
         propuestas: days.map((day, index) => ({
           day,
           value: 25 + (index * 3) + (index % 3) * 4, // Patrón semanal
-          color: colors.info
+          color: COLORS.info
         })),
         ingresos: days.map((day, index) => ({
           day,
           value: 600 + (index * 80) + (index % 2) * 120, // Patrón semanal
-          color: colors.warning
+          color: COLORS.warning
         })),
       },
       especialidades: [
@@ -162,22 +160,25 @@ export default function ReportsScreen({ navigation }) {
   ];
 
   return (
-    <GradientBackground variant="white" theme="adminDashboard">
-      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
+      <LinearGradient
+        colors={COLORS.gradientAccent}
+        style={styles.headerGradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
         <View style={styles.header}>
-          <View style={styles.headerTop}>
-            <View style={styles.welcomeSection}>
-              <View style={styles.welcomeIconContainer}>
-                <Text style={styles.welcomeEmoji}>📊</Text>
-              </View>
-              <View style={styles.welcomeTextContainer}>
-                <Text style={styles.welcomeText}>Reportes y Análisis</Text>
-                <Text style={styles.welcomeSubtext}>Estadísticas de la plataforma</Text>
-              </View>
-            </View>
-            <OptionsMenu navigation={navigation} theme="adminDashboard" />
+          <View style={styles.headerContent}>
+            <Text style={styles.welcomeText}>📊 Reportes y Análisis</Text>
+            <Text style={styles.subtitle}>Estadísticas de la plataforma</Text>
           </View>
         </View>
+      </LinearGradient>
+
+      <ScrollView 
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
 
         {/* Estadísticas generales */}
         <View style={styles.statsSection}>
@@ -199,7 +200,7 @@ export default function ReportsScreen({ navigation }) {
         </View>
 
         {/* Selector de reporte simplificado */}
-        <AppCard style={styles.reportCard}>
+        <View style={styles.reportCard}>
           <Text style={styles.cardTitle}>📊 Tipo de Reporte</Text>
           <View style={styles.reportButtons}>
             {[
@@ -224,10 +225,10 @@ export default function ReportsScreen({ navigation }) {
               </TouchableOpacity>
             ))}
           </View>
-        </AppCard>
+        </View>
 
         {/* Sección de exportación */}
-        <AppCard style={styles.exportCard}>
+        <View style={styles.exportCard}>
           <View style={styles.exportHeader}>
             <Text style={styles.cardTitle}>
               {getChartIcon()} {getChartTitle()}
@@ -242,7 +243,7 @@ export default function ReportsScreen({ navigation }) {
               style={[styles.exportButton, styles.excelButton]}
               onPress={() => handleExport('excel')}
             >
-              <MaterialIcons name="table-chart" size={20} color="white" />
+              <Ionicons name="document-outline" size={20} color="white" />
               <Text style={styles.exportButtonText}>Excel</Text>
             </TouchableOpacity>
             
@@ -250,11 +251,11 @@ export default function ReportsScreen({ navigation }) {
               style={[styles.exportButton, styles.pdfButton]}
               onPress={() => handleExport('pdf')}
             >
-              <MaterialIcons name="picture-as-pdf" size={20} color="white" />
+              <Ionicons name="document-text-outline" size={20} color="white" />
               <Text style={styles.exportButtonText}>PDF</Text>
             </TouchableOpacity>
           </View>
-        </AppCard>
+        </View>
 
         {/* Distribuciones mejoradas */}
         <View style={styles.distributionsSection}>
@@ -262,7 +263,7 @@ export default function ReportsScreen({ navigation }) {
           
           <View style={styles.distributionsContainer}>
             {/* Especialidades más populares */}
-            <AppCard style={styles.distributionCard}>
+            <View style={styles.distributionCard}>
               <Text style={styles.distributionTitle}>📚 Especialidades Más Populares</Text>
               <View style={styles.distributionList}>
                 {reportsData.especialidades.map((specialty, index) => (
@@ -283,10 +284,10 @@ export default function ReportsScreen({ navigation }) {
                   </View>
                 ))}
               </View>
-            </AppCard>
+            </View>
 
             {/* Ubicaciones */}
-            <AppCard style={styles.distributionCard}>
+            <View style={styles.distributionCard}>
               <Text style={styles.distributionTitle}>📍 Distribución por Ubicación</Text>
               <View style={styles.distributionList}>
                 {reportsData.ubicaciones.map((location, index) => (
@@ -299,7 +300,7 @@ export default function ReportsScreen({ navigation }) {
                       <View 
                         style={[
                           styles.distributionBarFill, 
-                          { width: `${location.percentage}%`, backgroundColor: '#10B981' }
+                          { width: `${location.percentage}%`, backgroundColor: COLORS.success }
                         ]} 
                       />
                     </View>
@@ -307,118 +308,75 @@ export default function ReportsScreen({ navigation }) {
                   </View>
                 ))}
               </View>
-            </AppCard>
+            </View>
           </View>
         </View>
       </ScrollView>
-    </GradientBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    padding: spacing.xl,
-    paddingBottom: 100,
+    flex: 1,
+    backgroundColor: COLORS.gray[50],
+  },
+  headerGradient: {
+    paddingTop: SPACING['5xl'],
+    paddingBottom: SPACING['2xl'],
   },
   header: {
-    marginBottom: spacing.lg,
+    paddingHorizontal: CONTAINER_SPACING.screen,
   },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  welcomeSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  welcomeIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: colors.themes.adminDashboard.card,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: spacing.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  welcomeEmoji: {
-    fontSize: 20,
-  },
-  welcomeTextContainer: {
+  headerContent: {
     flex: 1,
   },
   welcomeText: {
-    ...typography.title,
-    color: '#1F2937',
-    fontSize: 22,
-    fontWeight: '700',
-    marginBottom: 2,
+    fontSize: FONT_SIZES['2xl'],
+    fontWeight: FONT_WEIGHTS.bold,
+    color: COLORS.white,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
-  welcomeSubtext: {
-    ...typography.bodySmall,
-    color: '#6B7280',
-    fontSize: 14,
+  subtitle: {
+    fontSize: FONT_SIZES.base,
+    color: COLORS.white,
+    marginTop: SPACING.xs,
+    opacity: 0.9,
   },
-  roleButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.themes.adminDashboard.card,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: colors.themes.adminDashboard.primary,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  roleButtonText: {
-    color: colors.themes.adminDashboard.primary,
-    fontWeight: '600',
-    marginLeft: spacing.xs,
-    fontSize: 13,
+  scrollContainer: {
+    flex: 1,
+    marginTop: -SPACING['9xl'],
   },
   statsSection: {
-    marginBottom: spacing.lg,
+    paddingHorizontal: CONTAINER_SPACING.screen,
+    paddingTop: SPACING['4xl'],
+    paddingBottom: SPACING['3xl'],
   },
   sectionTitle: {
-    ...typography.subtitle,
-    color: '#1F2937',
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: spacing.md,
+    fontSize: FONT_SIZES.lg,
+    fontWeight: FONT_WEIGHTS.bold,
+    color: COLORS.gray[800],
+    marginBottom: SPACING['2xl'],
   },
   statsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.lg,
+    gap: SPACING.lg,
   },
   statCard: {
     flex: 1,
     minWidth: '45%',
-    padding: spacing.xl,
-    borderRadius: radii.xl,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-    borderWidth: 0,
+    padding: CONTAINER_SPACING.card,
+    borderRadius: BORDER_RADIUS.xl,
+    ...SHADOWS.md,
   },
   statHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: spacing.md,
+    marginBottom: SPACING.md,
   },
   statIconContainer: {
     width: 48,
@@ -426,170 +384,166 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 2,
+    ...SHADOWS.sm,
   },
   statChange: {
-    ...typography.caption,
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.xs,
+    fontWeight: FONT_WEIGHTS.semibold,
   },
   statValue: {
-    ...typography.title,
-    color: '#1F2937',
-    fontSize: 28,
-    fontWeight: '800',
-    marginBottom: spacing.xs,
+    fontSize: FONT_SIZES['3xl'],
+    fontWeight: FONT_WEIGHTS.extrabold,
+    color: COLORS.gray[800],
+    marginBottom: SPACING.xs,
   },
   statLabel: {
-    ...typography.caption,
-    color: '#6B7280',
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.gray[600],
+    fontWeight: FONT_WEIGHTS.semibold,
     textAlign: 'center',
   },
   cardTitle: {
-    ...typography.subtitle,
-    color: '#1F2937',
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: spacing.lg,
+    fontSize: FONT_SIZES.lg,
+    fontWeight: FONT_WEIGHTS.bold,
+    color: COLORS.gray[800],
+    marginBottom: SPACING.lg,
   },
   reportCard: {
-    marginBottom: spacing.lg,
+    backgroundColor: COLORS.white,
+    borderRadius: BORDER_RADIUS.xl,
+    padding: CONTAINER_SPACING.card,
+    marginHorizontal: CONTAINER_SPACING.screen,
+    marginBottom: SPACING['2xl'],
+    ...SHADOWS.md,
   },
   reportButtons: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.sm,
+    gap: SPACING.sm,
   },
   reportButton: {
     flex: 1,
     minWidth: '45%',
-    paddingVertical: spacing.md,
-    backgroundColor: colors.themes.adminDashboard.card,
-    borderRadius: 12,
+    paddingVertical: SPACING.md,
+    backgroundColor: COLORS.gray[50],
+    borderRadius: BORDER_RADIUS.lg,
     borderWidth: 1,
-    borderColor: colors.themes.adminDashboard.primary,
+    borderColor: COLORS.primary,
     alignItems: 'center',
   },
   reportButtonActive: {
-    backgroundColor: colors.themes.adminDashboard.primary,
+    backgroundColor: COLORS.primary,
   },
   reportButtonIcon: {
     fontSize: 20,
-    marginBottom: spacing.xs,
+    marginBottom: SPACING.xs,
   },
   reportButtonText: {
-    ...typography.bodySmall,
-    color: colors.themes.adminDashboard.primary,
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.primary,
+    fontWeight: FONT_WEIGHTS.semibold,
   },
   reportButtonTextActive: {
-    color: 'white',
+    color: COLORS.white,
   },
   exportCard: {
-    marginBottom: spacing.lg,
+    backgroundColor: COLORS.white,
+    borderRadius: BORDER_RADIUS.xl,
+    padding: CONTAINER_SPACING.card,
+    marginHorizontal: CONTAINER_SPACING.screen,
+    marginBottom: SPACING['2xl'],
+    ...SHADOWS.md,
   },
   exportHeader: {
-    marginBottom: spacing.lg,
+    marginBottom: SPACING.lg,
   },
   exportSubtitle: {
-    ...typography.bodySmall,
-    color: '#6B7280',
-    fontSize: 14,
-    marginTop: spacing.xs,
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.gray[600],
+    marginTop: SPACING.xs,
   },
   exportButtons: {
     flexDirection: 'row',
-    gap: spacing.md,
+    gap: SPACING.md,
   },
   exportButton: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+    borderRadius: BORDER_RADIUS.lg,
+    ...SHADOWS.sm,
   },
   excelButton: {
-    backgroundColor: '#10B981',
+    backgroundColor: COLORS.success,
   },
   pdfButton: {
-    backgroundColor: '#EF4444',
+    backgroundColor: COLORS.danger,
   },
   exportButtonText: {
-    ...typography.body,
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '600',
-    marginLeft: spacing.sm,
+    color: COLORS.white,
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.semibold,
+    marginLeft: SPACING.sm,
   },
   distributionsSection: {
-    marginBottom: spacing.lg,
+    paddingHorizontal: CONTAINER_SPACING.screen,
+    paddingBottom: SPACING['6xl'],
   },
   distributionsContainer: {
-    gap: spacing.lg,
+    gap: SPACING.lg,
   },
   distributionCard: {
-    marginBottom: 0,
+    backgroundColor: COLORS.white,
+    borderRadius: BORDER_RADIUS.xl,
+    padding: CONTAINER_SPACING.card,
+    marginBottom: SPACING['2xl'],
+    ...SHADOWS.md,
   },
   distributionTitle: {
-    ...typography.subtitle,
-    color: '#1F2937',
-    fontSize: 16,
-    fontWeight: '700',
-    marginBottom: spacing.lg,
+    fontSize: FONT_SIZES.base,
+    fontWeight: FONT_WEIGHTS.bold,
+    color: COLORS.gray[800],
+    marginBottom: SPACING.lg,
   },
   distributionList: {
-    gap: spacing.lg,
+    gap: SPACING.lg,
   },
   distributionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.md,
+    gap: SPACING.md,
   },
   distributionInfo: {
     width: 100,
   },
   distributionName: {
-    ...typography.bodySmall,
-    color: '#1F2937',
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.gray[800],
+    fontWeight: FONT_WEIGHTS.semibold,
     marginBottom: 2,
   },
   distributionCount: {
-    ...typography.caption,
-    color: '#6B7280',
-    fontSize: 11,
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.gray[600],
   },
   distributionBar: {
     flex: 1,
     height: 6,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: COLORS.gray[200],
     borderRadius: 3,
     overflow: 'hidden',
   },
   distributionBarFill: {
     height: '100%',
-    backgroundColor: '#3B82F6',
+    backgroundColor: COLORS.primary,
   },
   distributionPercentage: {
-    ...typography.caption,
-    color: '#1F2937',
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.gray[800],
+    fontWeight: FONT_WEIGHTS.semibold,
     width: 35,
     textAlign: 'right',
   },

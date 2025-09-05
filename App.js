@@ -1,8 +1,9 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import RootNavigator from './src/navigation/RootNavigator';
 import { StoreProvider } from './src/store/store';
-import { ThemeProvider } from './src/context/ThemeContext';
+import { AuthProvider } from './src/context/AuthContext';
 
 // Solo habilitar screens en plataformas nativas
 if (Platform.OS !== 'web') {
@@ -16,10 +17,13 @@ if (Platform.OS !== 'web') {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <StoreProvider>
-        <RootNavigator />
-      </StoreProvider>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <StoreProvider>
+          <StatusBar barStyle="light-content" backgroundColor="#6366f1" />
+          <RootNavigator />
+        </StoreProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }

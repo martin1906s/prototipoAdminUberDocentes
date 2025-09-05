@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
 import WebCompatibleLinearGradient from './WebCompatibleLinearGradient';
-import { colors } from '../theme/theme';
+import { COLORS } from '../utils/constants';
 
 // Importar SVG solo en plataformas nativas
 let Svg, Circle, Rect, Line, SvgText, G;
@@ -240,13 +240,13 @@ export function ProposalsBarChart({ metrics }) {
   
   const labels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
   const chartColors = [
-    colors.success,
-    colors.warning,
-    colors.danger,
-    colors.info,
-    colors.secondary,
-    colors.primary,
-    colors.accent,
+    COLORS.success,
+    COLORS.warning,
+    COLORS.danger,
+    COLORS.info,
+    COLORS.secondary,
+    COLORS.primary,
+    COLORS.accent,
   ];
   
   return <NativeBarChart data={data} labels={labels} colors={chartColors} height={300} />;
@@ -260,7 +260,7 @@ export function ProposalsDoughnutChart({ metrics }) {
   ];
   
   const labels = ['Aceptadas', 'Pendientes', 'Rechazadas'];
-  const chartColors = [colors.success, colors.warning, colors.danger];
+  const chartColors = [COLORS.success, COLORS.warning, COLORS.danger];
   
   return <NativeDoughnutChart data={data} labels={labels} colors={chartColors} height={250} />;
 }
@@ -278,7 +278,7 @@ export function UsersGrowthLineChart({ metrics }) {
   ];
   
   const labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
-  const chartColors = [colors.info, colors.warning];
+  const chartColors = [COLORS.info, COLORS.warning];
   
   return <NativeLineChart data={data} labels={labels} colors={chartColors} height={300} />;
 }
