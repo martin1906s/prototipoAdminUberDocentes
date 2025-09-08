@@ -21,10 +21,6 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthState = async () => {
     try {
-      // Para desarrollo: limpiar autenticación al iniciar
-      // Comentar la siguiente línea en producción
-      await AsyncStorage.removeItem('user');
-      
       const userData = await AsyncStorage.getItem('user');
       if (userData) {
         setUser(JSON.parse(userData));
@@ -107,10 +103,12 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(true);
       
       // Simulación de logout - delay para simular proceso
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 300));
       
       await AsyncStorage.removeItem('user');
       setUser(null);
+      
+      console.log('Logout exitoso - usuario desautenticado');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     } finally {

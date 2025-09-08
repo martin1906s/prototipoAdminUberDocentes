@@ -2,11 +2,8 @@ import React from 'react';
 import WebCompatibleLinearGradient from './WebCompatibleLinearGradient';
 import { View, StyleSheet } from 'react-native';
 import { COLORS, SPACING } from '../utils/constants';
-import { useTheme } from '../context/ThemeContext';
 
 export default function GradientBackground({ children, variant = 'light', theme = 'default' }) {
-  const { isDarkMode } = useTheme();
-  const colors = getColors(isDarkMode);
   
   // Si es 'white', usar fondo según el tema
   if (variant === 'white') {
@@ -39,7 +36,7 @@ export default function GradientBackground({ children, variant = 'light', theme 
   }
   
   // Gradiente normal
-  const gradientColors = gradients[variant] || gradients.light;
+  const gradientColors = COLORS.gradientPrimary;
   
   return (
     <WebCompatibleLinearGradient

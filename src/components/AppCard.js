@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { COLORS, BORDER_RADIUS, SPACING, SHADOWS } from '../utils/constants';
+import { colors, radii, spacing, elevation } from '../theme/theme';
 
 export default function AppCard({ 
   children, 
@@ -28,9 +28,9 @@ export default function AppCard({
     switch (variant) {
       case 'solid':
         return {
-          backgroundColor: COLORS.white,
+          backgroundColor: colors.white,
           borderWidth: 1,
-          borderColor: COLORS.gray[200],
+          borderColor: colors.neutral200,
         };
       case 'glass':
       default:
@@ -46,8 +46,8 @@ export default function AppCard({
   return (
     <CardComponent
       style={{
-        borderRadius: BORDER_RADIUS.lg,
-        padding: SPACING.lg,
+        borderRadius: radii.lg,
+        padding: getPadding(),
         overflow: 'hidden',
         // Web-compatible shadow
         shadowColor: '#000',

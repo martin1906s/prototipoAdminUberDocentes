@@ -19,6 +19,10 @@ const initialState = {
     email: 'admin@admin.com',
     role: 'admin',
   },
+  // Perfil del docente actual
+  teacherProfile: null,
+  teacherSchedule: null,
+  currentTeacher: null,
   teachers: [
     {
       id: '1',
@@ -55,27 +59,27 @@ const initialState = {
     {
       id: '1',
       teacherId: '1',
-      studentName: 'Juan Pérez',
-      subject: 'Matemáticas',
-      status: 'aceptada',
+      user: { nombre: 'Juan Pérez', email: 'juan@example.com', telefono: '+593 99 123 4567' },
+      mensaje: 'Necesito ayuda con matemáticas para mi examen final',
+      estado: 'aceptada',
       date: '2024-01-15',
       price: 25
     },
     {
       id: '2',
       teacherId: '2',
-      studentName: 'María Silva',
-      subject: 'Física',
-      status: 'pendiente',
+      user: { nombre: 'María Silva', email: 'maria@example.com', telefono: '+593 98 765 4321' },
+      mensaje: 'Clases de física para preparar examen de admisión',
+      estado: 'pendiente',
       date: '2024-01-16',
       price: 30
     },
     {
       id: '3',
       teacherId: '3',
-      studentName: 'Pedro González',
-      subject: 'Química',
-      status: 'rechazada',
+      user: { nombre: 'Pedro González', email: 'pedro@example.com', telefono: '+593 97 654 3210' },
+      mensaje: 'Ayuda con química orgánica para la universidad',
+      estado: 'rechazada',
       date: '2024-01-17',
       price: 28
     }
@@ -95,6 +99,21 @@ const storeReducer = (state, action) => {
         ...state,
         userProfile: action.payload
       };
+    case 'SAVE_TEACHER_PROFILE':
+      return {
+        ...state,
+        teacherProfile: action.payload
+      };
+    case 'UPDATE_TEACHER_SCHEDULE':
+      return {
+        ...state,
+        teacherSchedule: action.payload
+      };
+    case 'SET_CURRENT_TEACHER':
+      return {
+        ...state,
+        currentTeacher: action.payload
+      };
     case 'ADD_TEACHER':
       return {
         ...state,
@@ -111,6 +130,18 @@ const storeReducer = (state, action) => {
       return {
         ...state,
         teachers: state.teachers.filter(teacher => teacher.id !== action.payload)
+      };
+    case 'CREATE_PROPOSAL':
+      const newProposal = { id: `p_${Date.now()}`, estado: 'pendiente', ...action.payload };
+      return {
+        ...state,
+        proposals: [newProposal, ...state.proposals]
+      };
+    case 'UPDATE_PROPOSAL_STATUS':
+      const { proposalId, status } = action.payload;
+      return {
+        ...state,
+        proposals: state.proposals.map((p) => (p.id === proposalId ? { ...p, estado: status } : p)),
       };
     case 'ADD_PROPOSAL':
       return {
@@ -132,6 +163,9 @@ const storeReducer = (state, action) => {
     case 'CLEAR_TEACHER_DATA':
       return {
         ...state,
+        teacherProfile: null,
+        teacherSchedule: null,
+        currentTeacher: null,
         teachers: [],
         proposals: []
       };
@@ -144,9 +178,14 @@ const storeReducer = (state, action) => {
 const actions = {
   setRole: (role) => ({ type: 'SET_ROLE', payload: role }),
   setUserProfile: (profile) => ({ type: 'SET_USER_PROFILE', payload: profile }),
+  saveTeacherProfile: (profile) => ({ type: 'SAVE_TEACHER_PROFILE', payload: profile }),
+  updateTeacherSchedule: (schedule) => ({ type: 'UPDATE_TEACHER_SCHEDULE', payload: schedule }),
+  setCurrentTeacher: (teacher) => ({ type: 'SET_CURRENT_TEACHER', payload: teacher }),
   addTeacher: (teacher) => ({ type: 'ADD_TEACHER', payload: teacher }),
   updateTeacher: (teacher) => ({ type: 'UPDATE_TEACHER', payload: teacher }),
   deleteTeacher: (teacherId) => ({ type: 'DELETE_TEACHER', payload: teacherId }),
+  createProposal: (payload) => ({ type: 'CREATE_PROPOSAL', payload }),
+  updateProposalStatus: (proposalId, status) => ({ type: 'UPDATE_PROPOSAL_STATUS', payload: { proposalId, status } }),
   addProposal: (proposal) => ({ type: 'ADD_PROPOSAL', payload: proposal }),
   updateProposal: (proposal) => ({ type: 'UPDATE_PROPOSAL', payload: proposal }),
   deleteProposal: (proposalId) => ({ type: 'DELETE_PROPOSAL', payload: proposalId }),
@@ -165,9 +204,14 @@ export const StoreProvider = ({ children }) => {
     actions: {
       setRole: (role) => dispatchAction(actions.setRole(role)),
       setUserProfile: (profile) => dispatchAction(actions.setUserProfile(profile)),
+      saveTeacherProfile: (profile) => dispatchAction(actions.saveTeacherProfile(profile)),
+      updateTeacherSchedule: (schedule) => dispatchAction(actions.updateTeacherSchedule(schedule)),
+      setCurrentTeacher: (teacher) => dispatchAction(actions.setCurrentTeacher(teacher)),
       addTeacher: (teacher) => dispatchAction(actions.addTeacher(teacher)),
       updateTeacher: (teacher) => dispatchAction(actions.updateTeacher(teacher)),
       deleteTeacher: (teacherId) => dispatchAction(actions.deleteTeacher(teacherId)),
+      createProposal: (payload) => dispatchAction(actions.createProposal(payload)),
+      updateProposalStatus: (proposalId, status) => dispatchAction(actions.updateProposalStatus(proposalId, status)),
       addProposal: (proposal) => dispatchAction(actions.addProposal(proposal)),
       updateProposal: (proposal) => dispatchAction(actions.updateProposal(proposal)),
       deleteProposal: (proposalId) => dispatchAction(actions.deleteProposal(proposalId)),

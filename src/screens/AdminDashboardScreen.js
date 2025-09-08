@@ -149,7 +149,8 @@ export default function AdminDashboardScreen({ navigation }) {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <Ionicons name="log-out-outline" size={20} color={COLORS.white} />
+              <Ionicons name="log-out-outline" size={24} color={COLORS.white} />
+              <Text style={styles.logoutText}>Cerrar Sesión</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -232,7 +233,7 @@ export default function AdminDashboardScreen({ navigation }) {
           <View style={styles.quickActions}>
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => showConfirm('Próximamente', 'Gestión de docentes', () => {})}
+              onPress={() => navigation.navigate('TeacherManagement')}
             >
               <LinearGradient
                 colors={COLORS.gradientPrimary}
@@ -240,14 +241,14 @@ export default function AdminDashboardScreen({ navigation }) {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               >
-                <Ionicons name="people" size={24} color={COLORS.white} />
+                <Ionicons name="people" size={20} color={COLORS.white} />
                 <Text style={styles.quickActionText}>Gestionar Docentes</Text>
               </LinearGradient>
             </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => showConfirm('Próximamente', 'Gestión de propuestas', () => {})}
+              onPress={() => navigation.navigate('ProposalManagement')}
             >
               <LinearGradient
                 colors={COLORS.gradientAccent}
@@ -255,14 +256,29 @@ export default function AdminDashboardScreen({ navigation }) {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               >
-                <Ionicons name="document-text" size={24} color={COLORS.white} />
+                <Ionicons name="document-text" size={20} color={COLORS.white} />
                 <Text style={styles.quickActionText}>Gestionar Propuestas</Text>
               </LinearGradient>
             </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => showConfirm('Próximamente', 'Reportes y estadísticas', () => {})}
+              onPress={() => navigation.navigate('UserManagement')}
+            >
+              <LinearGradient
+                colors={[COLORS.info, COLORS.infoDark]}
+                style={styles.quickActionGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              >
+                <Ionicons name="person-circle" size={20} color={COLORS.white} />
+                <Text style={styles.quickActionText}>Gestionar Usuarios</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.quickActionButton}
+              onPress={() => navigation.navigate('Analytics')}
             >
               <LinearGradient
                 colors={[COLORS.accent, COLORS.accentDark]}
@@ -270,14 +286,14 @@ export default function AdminDashboardScreen({ navigation }) {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               >
-                <Ionicons name="analytics" size={24} color={COLORS.white} />
-                <Text style={styles.quickActionText}>Reportes</Text>
+                <Ionicons name="analytics" size={20} color={COLORS.white} />
+                <Text style={styles.quickActionText}>Analíticas</Text>
               </LinearGradient>
             </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.quickActionButton}
-              onPress={() => showConfirm('Próximamente', 'Configuración del sistema', () => {})}
+              onPress={() => navigation.navigate('Settings')}
             >
               <LinearGradient
                 colors={[COLORS.gray[600], COLORS.gray[700]]}
@@ -285,7 +301,7 @@ export default function AdminDashboardScreen({ navigation }) {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
               >
-                <Ionicons name="settings" size={24} color={COLORS.white} />
+                <Ionicons name="settings" size={20} color={COLORS.white} />
                 <Text style={styles.quickActionText}>Configuración</Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -296,7 +312,7 @@ export default function AdminDashboardScreen({ navigation }) {
         <View style={styles.recentContainer}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Propuestas Recientes</Text>
-            <TouchableOpacity onPress={() => showConfirm('Próximamente', 'Vista detallada de propuestas', () => {})}>
+            <TouchableOpacity onPress={() => navigation.navigate('ProposalManagement')}>
               <Text style={styles.seeAllText}>Ver todas</Text>
             </TouchableOpacity>
           </View>
@@ -395,6 +411,13 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    gap: SPACING.sm,
+  },
+  logoutText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZES.sm,
+    fontWeight: FONT_WEIGHTS.semibold,
   },
   scrollContainer: {
     flex: 1,

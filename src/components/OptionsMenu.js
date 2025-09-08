@@ -40,7 +40,7 @@ export default function OptionsMenu({ navigation, theme = 'userSearch' }) {
     
     // Usar setTimeout para evitar el error de useInsertionEffect
     setTimeout(() => {
-      navigation.reset({ index: 0, routes: [{ name: 'AdminDashboard' }] });
+      navigation.reset({ index: 0, routes: [{ name: 'RoleSelect' }] });
     }, 100);
   };
 
@@ -127,8 +127,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     borderRadius: 20,
     borderWidth: 1,
   },
